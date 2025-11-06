@@ -1,0 +1,31 @@
+# Virtual environments
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode/
+
+# Database / instances
+*.sqlite3
+instance/
+
+# Environment files
+.env
+
+# Byte-compiled
+*.pyo
+
+# Coverage
+.coverage
+
+# Node modules (if any)
+node_modules/
+
+# Logs
+*.log
