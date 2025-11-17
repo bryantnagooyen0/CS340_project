@@ -1,0 +1,59 @@
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Developers</h1>
+
+{# READ table #}
+<table>
+    <thead>
+        {# For the table header row, we print the DB attribute names #}
+        <tr>
+            {% for key in developers[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {# For each row, print the id, fname, lname, homeworld and age #}
+        {% for developer in developers %}
+        <tr>
+            <td>{{ developer['Developer ID'] }}</td>
+            <td>{{ developer['Developer Name'] }}</td>
+
+
+            {# Edit form #}
+            <form id="edit_developer_form">
+                <input type="hidden" name="edit_developer_id" value="{{ developer['Developer ID'] }}">
+                <input type="hidden" name="edit_developer_name" value="{{ developer['Developer Name'] }}">
+                <td>
+                    <button type="submit">
+                        Edit
+                    </button>
+                </td>
+                
+            </form>
+
+            {# DELETE form #}
+            <form id="delete_developer_form">
+                <input type="hidden" name="delete_developer_id" value="{{ developer['Developer ID'] }}">
+                <input type="hidden" name="delete_developer_name" value="{{ developer['Developer Name'] }}">
+                <td>
+                    <button type="submit">
+                        Delete
+                    </button>
+                </td>
+
+            </form>
+
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

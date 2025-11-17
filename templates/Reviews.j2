@@ -1,0 +1,56 @@
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Reviews</h1>
+
+{# READ table #}
+<table>
+    <thead>
+        {# For the table header row, we print the DB attribute names #}
+        <tr>
+            {% for key in reviews[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {# For each row, print the id, fname, lname, homeworld and age #}
+        {% for review in reviews %}
+        <tr>
+            <td>{{ review['Review ID'] }}</td>
+            <td>{{ review['Game Title'] }}</td>
+            <td>{{ review['Reviewer Company'] }}</td>
+            <td>{{ review['Rating'] }}</td>
+            <td>{{ review['Comment'] }}</td>
+            <td>{{ review['Review Date'] }}</td>
+
+            {# Edit form #}
+            <form id="edit_developer_form">
+                
+                <td>
+                    <button type="submit">
+                        Edit
+                    </button>
+                </td>
+
+            {# DELETE form #}
+            <form id="delete_review_form">
+                <input type="hidden" name="delete_review_id" value="{{ review['Review ID'] }}">
+                <input type="hidden" name="delete_review_name" value="{{ review['Review Name'] }}">
+                <td>
+                    <button type="submit">
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Games</h1>
+
+{# READ table #}
+<table>
+    <thead>
+        {# For the table header row, we print the DB attribute names #}
+        <tr>
+            {% for key in games[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {# For each row, print the id, fname, lname, homeworld and age #}
+        {% for game in games %}
+        <tr>
+            <td>{{ game['Game ID'] }}</td>
+            <td>{{ game['Title'] }}</td>
+            <td>{{ game['Genre'] }}</td>
+            <td>{{ game['Developer'] }}</td>
+            <td>{{ game['Sales'] }}</td>
+            <td>{{ game['Release Date'] }}</td>
+
+            {# Edit form #}
+            <form id="edit_developer_form">
+                
+                <td>
+                    <button type="submit">
+                        Edit
+                    </button>
+                </td>
+                
+            </form>
+
+            {# DELETE form #}
+            <form id="delete_game_form">
+                <input type="hidden" name="delete_game_id" value="{{ game['Game ID'] }}">
+                <input type="hidden" name="delete_game_name" value="{{ game['Title'] }}">
+                <td>
+                    <button type="submit">
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{# CREATE form #}
+<h2>Add a Game</h2>
+<form class="cuForm" id="add_game_form">
+    <label for="add_game_title">Game Title: </label>
+    <input type="text" name="add_game_title" id="add_game_title" required>
+
+    <label for="add_game_genre">Genre: </label>
+    <select name="add_game_genre" id="add_game_genre" required>
+        <option value="NULL" selected>Select a Genre</option>
+        <option value="NULL">&lt; None &gt;</option>
+    {% for genre in genres %}
+    <option value="{{genre['Genre ID']}}" required>{{genre['Genre Name']}}</option>
+    {% endfor %}
+    </select>
+
+    <label for="add_game_developer">Developer: </label>
+    <select name="add_game_developer" id="add_game_developer" required>
+        <option value="NULL" selected>Select a Developer</option>
+        <option value="NULL">&lt; None &gt;</option>
+    {% for developer in developers %}
+    <option value="{{developer['Developer ID']}}" required>{{developer['Developer Name']}}</option>
+    {% endfor %}
+    </select>
+
+    <label for="add_game_salescount">Sales Count: </label>
+    <input type="number" name="add_game_salescount" id="add_game_salescount" min="0">
+
+    <label for="add_game_releasedate">Release Date: </label>
+    <input type="date" name="add_game_releasedate" id="add_game_releasedate" min="0">
+
+    <input type="submit">
+</form>
+
+
+
+{% endblock %}
