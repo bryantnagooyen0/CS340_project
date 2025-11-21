@@ -207,6 +207,99 @@ def reviews():
             dbConnection.close()
 
 
+@app.route("/reset", methods=["POST"])
+def reset_database():
+    dbConnection = None
+    cursor = None
+    try:
+        dbConnection = db.connectDB()
+        cursor = dbConnection.cursor()
+
+        # Call the stored procedure
+        cursor.callproc('reset_database')
+
+        while True:
+            try:
+                cursor.fetchall()
+            except Exception:
+                pass
+            if not cursor.nextset():
+                break
+
+        cursor.close()
+        dbConnection.commit()
+        return {"status": "success", "message": "Database reset successfully"}, 200
+
+    except Exception as e:
+        if cursor:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if dbConnection:
+            try:
+                dbConnection.rollback()
+            except Exception:
+                pass
+        print(f"Error resetting database: {e}")
+        return {"status": "error", "message": str(e)}, 500
+
+    finally:
+        if dbConnection:
+            try:
+                dbConnection.close()
+            except Exception:
+                pass
+
+
+@app.route("/delete/developer", methods=["POST"])
+def delete_developer():
+    dbConnection = None
+    cursor = None
+    try:
+        dev_id = request.form.get("delete_developer_id", "").strip()
+        if not dev_id.isdigit():
+            return "Invalid developer id", 400
+
+        dev_id = int(dev_id)
+        dbConnection = db.connectDB()
+        cursor = dbConnection.cursor()
+
+        cursor.callproc('delete_developer', (dev_id,))
+
+        while True:
+            try:
+                rows = cursor.fetchall()
+            except Exception:
+                pass
+            if not cursor.nextset():
+                break
+
+        dbConnection.commit()
+        return redirect("/developers")
+
+    except Exception as e:
+        if dbConnection:
+            try:
+                dbConnection.rollback()
+            except Exception:
+                pass
+        print(f"Error deleting developer: {e}")
+        return "Server error", 500
+
+    finally:
+        if cursor:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if dbConnection:
+            try:
+                dbConnection.close()
+            except Exception:
+                pass
+
+
 # ########################################
 # ########## LISTENER
 

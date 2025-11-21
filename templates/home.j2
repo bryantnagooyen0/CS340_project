@@ -6,4 +6,38 @@
     <p></p>
 </div>
 
+<div style="margin-top: 40px; padding: 20px; border-top: 2px solid #ccc;">
+    <h3>Admin Actions</h3>
+    <button onclick="resetDatabase()" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        Reset Database
+    </button>
+</div>
+
+<script>
+function resetDatabase() {
+    // Simple yes/no confirmation popup
+    if (confirm("Are you sure you want to reset the database?")) {
+        // Make POST request to the reset endpoint
+        fetch('/reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Database reset successfully!');
+                location.reload();  // Refresh the page
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error);
+        });
+    }
+}
+</script>
+
 {% endblock %}
